@@ -22,20 +22,24 @@ const ProductList = ({ onAddToCart }: ProductListProps) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="space-y-2">
       {products.map((product) => (
-        <Card key={product.id}>
+        <Card key={product.id} className="w-full">
           <CardContent className="p-4">
-            <h3 className="font-semibold">{product.name}</h3>
-            <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
-            <p className="text-sm text-gray-500">Stok: {product.stock}</p>
-            <Button 
-              onClick={() => onAddToCart(product)}
-              disabled={product.stock === 0}
-              className="mt-2 w-full"
-            >
-              Tambah ke Keranjang
-            </Button>
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <h3 className="font-semibold">{product.name}</h3>
+                <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">Stok: {product.stock}</p>
+              </div>
+              <Button 
+                onClick={() => onAddToCart(product)}
+                disabled={product.stock === 0}
+                className="ml-4"
+              >
+                Tambah ke Keranjang
+              </Button>
+            </div>
           </CardContent>
         </Card>
       ))}
