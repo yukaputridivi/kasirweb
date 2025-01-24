@@ -21,6 +21,10 @@ const ProductList = ({ onAddToCart }: ProductListProps) => {
     setProducts(storedProducts);
   }, []);
 
+  const handleAddToCart = (product: Product) => {
+    onAddToCart(product);
+  };
+
   return (
     <div className="space-y-2">
       {products.map((product) => (
@@ -33,7 +37,7 @@ const ProductList = ({ onAddToCart }: ProductListProps) => {
                 <p className="text-sm text-gray-500">Stok: {product.stock}</p>
               </div>
               <Button 
-                onClick={() => onAddToCart(product)}
+                onClick={() => handleAddToCart(product)}
                 disabled={product.stock === 0}
                 className="ml-4"
               >
