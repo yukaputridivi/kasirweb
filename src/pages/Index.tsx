@@ -73,7 +73,7 @@ const Index = () => {
       if (cartItem) {
         return {
           ...product,
-          stock: product.stock - cartItem.quantity
+          stock: Math.max(0, product.stock - cartItem.quantity) // Ensure stock doesn't go below 0
         };
       }
       return product;
