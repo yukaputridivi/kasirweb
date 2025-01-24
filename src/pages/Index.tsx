@@ -85,8 +85,8 @@ const Index = () => {
 
   const handleCloseReceipt = () => {
     setShowReceipt(false);
-    setCartItems([]);
-    setPayment(0);
+    setCartItems([]); // Clear the cart
+    setPayment(0); // Reset payment amount
   };
 
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
