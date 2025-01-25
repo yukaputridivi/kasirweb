@@ -3,6 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface SaleTransaction {
   id: string;
@@ -19,6 +22,9 @@ interface SaleTransaction {
 
 const SalesJournal = () => {
   const [transactions, setTransactions] = useState<SaleTransaction[]>([]);
+  const [editingTransaction, setEditingTransaction] = useState<SaleTransaction | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editedPayment, setEditedPayment] = useState<number>(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -38,10 +44,42 @@ const SalesJournal = () => {
   };
 
   const handleEdit = (transaction: SaleTransaction) => {
-    // For now, we'll just show a toast since editing would require a more complex form
+    setEditingTransaction(transaction);
+    setEditedPayment(transaction.payment);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingTransaction) return;
+
+    const newChange = editedPayment - editingTransaction.total;
+    
+    if (editedPayment < editingTransaction.total) {
+      toast({
+        title: "Pembayaran tidak mencukupi",
+        description: "Jumlah pembayaran harus lebih besar atau sama dengan total",
+        duration: 2000,
+      });
+      return;
+    }
+
+    const updatedTransaction = {
+      ...editingTransaction,
+      payment: editedPayment,
+      change: newChange
+    };
+
+    const updatedTransactions = transactions.map(t => 
+      t.id === editingTransaction.id ? updatedTransaction : t
+    );
+
+    localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+    setTransactions(updatedTransactions);
+    setIsEditDialogOpen(false);
+    setEditingTransaction(null);
+
     toast({
-      title: "Fitur edit akan segera hadir",
-      description: "Mohon maaf, fitur ini sedang dalam pengembangan",
+      title: "Transaksi berhasil diperbarui",
       duration: 2000,
     });
   };
@@ -98,6 +136,45 @@ const SalesJournal = () => {
           </Card>
         ))}
       </div>
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Transaksi</DialogTitle>
+          </DialogHeader>
+          {editingTransaction && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Total Pembelian</Label>
+                <Input
+                  type="text"
+                  value={`Rp. ${editingTransaction.total.toLocaleString()}`}
+                  disabled
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Pembayaran</Label>
+                <Input
+                  type="number"
+                  value={editedPayment}
+                  onChange={(e) => setEditedPayment(Number(e.target.value))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Kembalian</Label>
+                <Input
+                  type="text"
+                  value={`Rp. ${(editedPayment - editingTransaction.total).toLocaleString()}`}
+                  disabled
+                />
+              </div>
+              <Button onClick={handleSaveEdit} className="w-full">
+                Simpan Perubahan
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
