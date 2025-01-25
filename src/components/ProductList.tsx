@@ -11,9 +11,10 @@ interface Product {
 
 interface ProductListProps {
   onAddToCart: (product: Product) => void;
+  searchQuery: string;
 }
 
-const ProductList = ({ onAddToCart }: ProductListProps) => {
+const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -25,9 +26,13 @@ const ProductList = ({ onAddToCart }: ProductListProps) => {
     onAddToCart(product);
   };
 
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="space-y-2">
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
         <Card key={product.id} className="w-full">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">

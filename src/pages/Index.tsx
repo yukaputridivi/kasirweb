@@ -6,6 +6,8 @@ import Receipt from '@/components/Receipt';
 import SalesJournal from '@/components/SalesJournal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 interface Product {
   id: string;
@@ -25,6 +27,7 @@ const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [payment, setPayment] = useState(0);
   const [showReceipt, setShowReceipt] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleAddToCart = (product: Product) => {
     const existingItem = cartItems.find(item => item.id === product.id);
@@ -73,7 +76,7 @@ const Index = () => {
       if (cartItem) {
         return {
           ...product,
-          stock: Math.max(0, product.stock - cartItem.quantity) // Ensure stock doesn't go below 0
+          stock: Math.max(0, product.stock - cartItem.quantity)
         };
       }
       return product;
@@ -85,8 +88,8 @@ const Index = () => {
 
   const handleCloseReceipt = () => {
     setShowReceipt(false);
-    setCartItems([]); // Clear the cart
-    setPayment(0); // Reset payment amount
+    setCartItems([]);
+    setPayment(0);
   };
 
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -101,9 +104,18 @@ const Index = () => {
         </TabsList>
 
         <TabsContent value="pos" className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+            <Input
+              placeholder="Cari produk..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-4">
-              <ProductList onAddToCart={handleAddToCart} />
+              <ProductList onAddToCart={handleAddToCart} searchQuery={searchQuery} />
             </div>
             <div>
               <Cart
