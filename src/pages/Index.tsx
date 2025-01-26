@@ -28,6 +28,7 @@ const Index = () => {
   const [payment, setPayment] = useState(0);
   const [showReceipt, setShowReceipt] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [customerName, setCustomerName] = useState('');
 
   const handleAddToCart = (product: Product) => {
     const existingItem = cartItems.find(item => item.id === product.id);
@@ -63,7 +64,8 @@ const Index = () => {
       items: cartItems,
       total,
       payment,
-      change
+      change,
+      customerName
     };
 
     const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
@@ -90,6 +92,7 @@ const Index = () => {
     setShowReceipt(false);
     setCartItems([]);
     setPayment(0);
+    setCustomerName('');
   };
 
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -125,6 +128,8 @@ const Index = () => {
                 onCheckout={handleCheckout}
                 payment={payment}
                 onPaymentChange={setPayment}
+                customerName={customerName}
+                onCustomerNameChange={setCustomerName}
               />
             </div>
           </div>
