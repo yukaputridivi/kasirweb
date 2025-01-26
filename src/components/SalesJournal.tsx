@@ -11,6 +11,7 @@ import Receipt from './Receipt';
 interface SaleTransaction {
   id: string;
   date: string;
+  customerName: string;
   items: Array<{
     name: string;
     price: number;
@@ -26,6 +27,7 @@ const SalesJournal = () => {
   const [editingTransaction, setEditingTransaction] = useState<SaleTransaction | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editedPayment, setEditedPayment] = useState<number>(0);
+  const [editedCustomerName, setEditedCustomerName] = useState<string>("");
   const [selectedTransaction, setSelectedTransaction] = useState<SaleTransaction | null>(null);
   const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
   const { toast } = useToast();
@@ -49,6 +51,7 @@ const SalesJournal = () => {
   const handleEdit = (transaction: SaleTransaction) => {
     setEditingTransaction(transaction);
     setEditedPayment(transaction.payment);
+    setEditedCustomerName(transaction.customerName || "");
     setIsEditDialogOpen(true);
   };
 
@@ -68,6 +71,7 @@ const SalesJournal = () => {
 
     const updatedTransaction = {
       ...editingTransaction,
+      customerName: editedCustomerName,
       payment: editedPayment,
       change: newChange
     };
@@ -126,6 +130,10 @@ const SalesJournal = () => {
                 </div>
               </div>
               <div className="flex justify-between mb-2">
+                <span className="font-medium">Pelanggan</span>
+                <span>{transaction.customerName || "-"}</span>
+              </div>
+              <div className="flex justify-between mb-2">
                 <span className="font-medium">Total</span>
                 <span className="font-bold">Rp. {transaction.total.toLocaleString()}</span>
               </div>
@@ -159,6 +167,15 @@ const SalesJournal = () => {
           </DialogHeader>
           {editingTransaction && (
             <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Nama Pelanggan</Label>
+                <Input
+                  type="text"
+                  value={editedCustomerName}
+                  onChange={(e) => setEditedCustomerName(e.target.value)}
+                  placeholder="Masukkan nama pelanggan"
+                />
+              </div>
               <div className="space-y-2">
                 <Label>Total Pembelian</Label>
                 <Input
@@ -199,6 +216,7 @@ const SalesJournal = () => {
               total={selectedTransaction.total}
               payment={selectedTransaction.payment}
               change={selectedTransaction.change}
+              customerName={selectedTransaction.customerName}
               onClose={() => setIsReceiptDialogOpen(false)}
             />
           )}

@@ -1,81 +1,67 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-
-interface ReceiptItem {
-  name: string;
-  price: number;
-  quantity: number;
-}
 
 interface ReceiptProps {
-  items: ReceiptItem[];
+  items: Array<{
+    name: string;
+    price: number;
+    quantity: number;
+  }>;
   total: number;
   payment: number;
   change: number;
+  customerName?: string;
   onClose: () => void;
 }
 
-const Receipt = ({ items, total, payment, change, onClose }: ReceiptProps) => {
-  const receiptRef = useRef<HTMLDivElement>(null);
-
+const Receipt = ({ items, total, payment, change, customerName, onClose }: ReceiptProps) => {
   const handlePrint = () => {
-    const content = receiptRef.current;
-    if (content) {
-      const printWindow = window.open('', '', 'height=600,width=800');
-      if (printWindow) {
-        printWindow.document.write('<html><head><title>Receipt</title>');
-        printWindow.document.write('</head><body >');
-        printWindow.document.write(content.innerHTML);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();
-      }
-    }
+    window.print();
   };
 
   return (
-    <Card className="max-w-md mx-auto">
-      <CardContent className="p-6">
-        <div ref={receiptRef} className="space-y-4">
-          <div className="text-center">
-            <h2 className="text-xl font-bold">Struk Pembelian</h2>
-            <p className="text-sm text-gray-500">{new Date().toLocaleString()}</p>
+    <div className="p-4 space-y-4">
+      <div className="text-center space-y-2">
+        <h2 className="font-bold text-xl">Struk Pembayaran</h2>
+        <p className="text-sm text-gray-500">{new Date().toLocaleString()}</p>
+        {customerName && (
+          <p className="text-sm">Pelanggan: {customerName}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        {items.map((item, index) => (
+          <div key={index} className="flex justify-between text-sm">
+            <span>{item.name} x{item.quantity}</span>
+            <span>Rp. {(item.price * item.quantity).toLocaleString()}</span>
           </div>
-          <div className="space-y-2">
-            {items.map((item, index) => (
-              <div key={index} className="flex justify-between text-sm">
-                <span>{item.name} x{item.quantity}</span>
-                <span>Rp. {(item.price * item.quantity).toLocaleString()}</span>
-              </div>
-            ))}
-          </div>
-          <div className="border-t pt-2 space-y-1">
-            <div className="flex justify-between">
-              <span>Total:</span>
-              <span className="font-bold">Rp. {total.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Bayar:</span>
-              <span>Rp. {payment.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Kembali:</span>
-              <span>Rp. {change.toLocaleString()}</span>
-            </div>
-          </div>
-          <p className="text-center text-sm text-gray-500">Terima kasih atas kunjungan Anda!</p>
+        ))}
+      </div>
+
+      <div className="border-t pt-2 space-y-1">
+        <div className="flex justify-between font-bold">
+          <span>Total</span>
+          <span>Rp. {total.toLocaleString()}</span>
         </div>
-        <div className="flex space-x-2 mt-4">
-          <Button onClick={handlePrint} className="flex-1">
-            Cetak
-          </Button>
-          <Button onClick={onClose} variant="outline" className="flex-1">
-            Tutup
-          </Button>
+        <div className="flex justify-between">
+          <span>Pembayaran</span>
+          <span>Rp. {payment.toLocaleString()}</span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex justify-between">
+          <span>Kembalian</span>
+          <span>Rp. {change.toLocaleString()}</span>
+        </div>
+      </div>
+
+      <div className="text-center text-sm text-gray-500">
+        <p>Terima kasih atas kunjungan Anda</p>
+      </div>
+
+      <div className="flex justify-end space-x-2">
+        <Button onClick={handlePrint}>Cetak</Button>
+        <Button variant="outline" onClick={onClose}>Tutup</Button>
+      </div>
+    </div>
   );
 };
 
