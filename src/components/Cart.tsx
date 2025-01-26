@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface CartItem {
   id: string;
@@ -17,6 +18,8 @@ interface CartProps {
   onCheckout: () => void;
   payment: number;
   onPaymentChange: (amount: number) => void;
+  customerName: string;
+  onCustomerNameChange: (name: string) => void;
 }
 
 const Cart = ({ 
@@ -25,7 +28,9 @@ const Cart = ({
   onRemoveItem, 
   onCheckout,
   payment,
-  onPaymentChange
+  onPaymentChange,
+  customerName,
+  onCustomerNameChange
 }: CartProps) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const change = payment - total;
@@ -66,7 +71,7 @@ const Cart = ({
             <span className="font-bold">Rp. {total.toLocaleString()}</span>
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Bayar:</label>
+            <Label>Bayar:</Label>
             <Input
               type="number"
               value={payment}
@@ -77,6 +82,16 @@ const Cart = ({
           <div className="flex justify-between">
             <span>Kembali:</span>
             <span className="font-bold">Rp. {change.toLocaleString()}</span>
+          </div>
+          <div className="space-y-2">
+            <Label>Nama Pelanggan:</Label>
+            <Input
+              type="text"
+              value={customerName}
+              onChange={(e) => onCustomerNameChange(e.target.value)}
+              placeholder="Masukkan nama pelanggan"
+              className="w-full"
+            />
           </div>
           <Button 
             onClick={onCheckout}
