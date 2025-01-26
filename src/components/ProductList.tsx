@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Product {
   id: string;
   name: string;
   price: number;
   stock: number;
+  description: string;
 }
 
 interface ProductListProps {
@@ -72,6 +74,9 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                   <h3 className="font-semibold">{product.name}</h3>
                   <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {product.stock}</p>
+                  {product.description && (
+                    <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -133,6 +138,19 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                       ...editingProduct,
                       stock: Number(e.target.value)
                     })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Keterangan</Label>
+                  <Textarea
+                    id="description"
+                    value={editingProduct.description}
+                    onChange={(e) => setEditingProduct({
+                      ...editingProduct,
+                      description: e.target.value
+                    })}
+                    placeholder="Masukkan keterangan produk"
+                    className="min-h-[100px]"
                   />
                 </div>
                 <div className="flex justify-end gap-2">

@@ -5,12 +5,14 @@ import { Label } from "@/components/ui/label";
 import { toast } from 'sonner';
 import { Card, CardContent } from "@/components/ui/card";
 import { Pencil, Trash2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Product {
   id: string;
   name: string;
   price: number;
   stock: number;
+  description: string;
 }
 
 const ProductInput = () => {
@@ -19,7 +21,8 @@ const ProductInput = () => {
     id: '',
     name: '',
     price: 0,
-    stock: 0
+    stock: 0,
+    description: ''
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -49,7 +52,7 @@ const ProductInput = () => {
       toast.success('Produk berhasil ditambahkan');
     }
 
-    setProduct({ id: '', name: '', price: 0, stock: 0 });
+    setProduct({ id: '', name: '', price: 0, stock: 0, description: '' });
     loadProducts();
   };
 
@@ -66,7 +69,7 @@ const ProductInput = () => {
   };
 
   const handleCancel = () => {
-    setProduct({ id: '', name: '', price: 0, stock: 0 });
+    setProduct({ id: '', name: '', price: 0, stock: 0, description: '' });
     setIsEditing(false);
   };
 
@@ -102,6 +105,16 @@ const ProductInput = () => {
             required
           />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="description">Keterangan</Label>
+          <Textarea
+            id="description"
+            value={product.description}
+            onChange={(e) => setProduct({ ...product, description: e.target.value })}
+            placeholder="Masukkan keterangan produk"
+            className="min-h-[100px]"
+          />
+        </div>
         <div className="flex gap-2">
           <Button type="submit" className="flex-1">
             {isEditing ? 'Update Produk' : 'Tambah Produk'}
@@ -123,6 +136,9 @@ const ProductInput = () => {
                   <h3 className="font-semibold">{p.name}</h3>
                   <p className="text-gray-600">Rp. {p.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {p.stock}</p>
+                  {p.description && (
+                    <p className="text-sm text-gray-600 mt-1">{p.description}</p>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button
