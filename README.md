@@ -4,6 +4,20 @@
 
 **URL**: https://lovable.dev/projects/443f2429-dcbc-4856-9790-5719f9714f99
 
+## Deploying to Vercel
+
+To deploy this application to Vercel through GitHub:
+
+1. Push your code to a GitHub repository
+2. Go to [Vercel](https://vercel.com)
+3. Click "New Project"
+4. Import your GitHub repository
+5. Configure the project:
+   - Framework Preset: Vite
+   - Build Command: npm run build
+   - Output Directory: dist
+6. Click "Deploy"
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
@@ -67,3 +81,4 @@ Simply open [Lovable](https://lovable.dev/projects/443f2429-dcbc-4856-9790-5719f
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
