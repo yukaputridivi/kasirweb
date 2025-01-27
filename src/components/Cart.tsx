@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CartItem {
   id: string;
@@ -34,6 +35,7 @@ const Cart = ({
 }: CartProps) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const change = payment - total;
+  const paymentStatus = payment === total ? "Lunas" : payment < total ? "Dp" : "";
 
   return (
     <Card className="h-full">
@@ -82,6 +84,14 @@ const Cart = ({
           <div className="flex justify-between">
             <span>Kembali:</span>
             <span className="font-bold">Rp. {change.toLocaleString()}</span>
+          </div>
+          <div className="space-y-2">
+            <Label>Catatan:</Label>
+            <Textarea
+              value={paymentStatus}
+              readOnly
+              className="w-full bg-gray-50"
+            />
           </div>
           <div className="space-y-2">
             <Label>Nama Pelanggan:</Label>
