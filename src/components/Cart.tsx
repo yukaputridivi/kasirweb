@@ -106,7 +106,7 @@ const Cart = ({
           <Button 
             onClick={onCheckout}
             className="w-full"
-            disabled={items.length === 0 || payment < total}
+            disabled={items.length === 0}
           >
             Simpan & cetak nota
           </Button>
