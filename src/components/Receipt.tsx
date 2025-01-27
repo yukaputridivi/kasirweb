@@ -19,6 +19,8 @@ const Receipt = ({ items, total, payment, change, customerName, onClose }: Recei
     window.print();
   };
 
+  const paymentStatus = payment >= total ? "Lunas" : "Dp";
+
   return (
     <div className="p-4 space-y-4">
       <div className="text-center space-y-2">
@@ -27,6 +29,7 @@ const Receipt = ({ items, total, payment, change, customerName, onClose }: Recei
         {customerName && (
           <p className="text-sm">Pelanggan: {customerName}</p>
         )}
+        <p className="text-sm font-semibold">Status: {paymentStatus}</p>
       </div>
 
       <div className="space-y-2">
