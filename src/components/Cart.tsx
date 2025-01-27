@@ -35,7 +35,7 @@ const Cart = ({
 }: CartProps) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const change = payment - total;
-  const paymentStatus = payment === total ? "Lunas" : payment < total ? "Dp" : "";
+  const paymentStatus = payment >= total ? "Lunas" : "Dp";
 
   return (
     <Card className="h-full">
