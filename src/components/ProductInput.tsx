@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 interface Product {
   id: string;
   name: string;
+  length: number;
+  width: number;
   price: number;
   stock: number;
   description: string;
@@ -20,6 +22,8 @@ const ProductInput = () => {
   const [product, setProduct] = useState<Product>({
     id: '',
     name: '',
+    length: 0,
+    width: 0,
     price: 0,
     stock: 0,
     description: ''
@@ -52,7 +56,7 @@ const ProductInput = () => {
       toast.success('Produk berhasil ditambahkan');
     }
 
-    setProduct({ id: '', name: '', price: 0, stock: 0, description: '' });
+    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '' });
     loadProducts();
   };
 
@@ -69,7 +73,7 @@ const ProductInput = () => {
   };
 
   const handleCancel = () => {
-    setProduct({ id: '', name: '', price: 0, stock: 0, description: '' });
+    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '' });
     setIsEditing(false);
   };
 
@@ -84,6 +88,28 @@ const ProductInput = () => {
             onChange={(e) => setProduct({ ...product, name: e.target.value })}
             required
           />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="length">Panjang (cm)</Label>
+            <Input
+              id="length"
+              type="number"
+              value={product.length}
+              onChange={(e) => setProduct({ ...product, length: Number(e.target.value) })}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="width">Lebar (cm)</Label>
+            <Input
+              id="width"
+              type="number"
+              value={product.width}
+              onChange={(e) => setProduct({ ...product, width: Number(e.target.value) })}
+              required
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <Label htmlFor="price">Harga</Label>
@@ -134,6 +160,7 @@ const ProductInput = () => {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <h3 className="font-semibold">{p.name}</h3>
+                  <p className="text-sm text-gray-500">Ukuran: {p.length} x {p.width} cm</p>
                   <p className="text-gray-600">Rp. {p.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {p.stock}</p>
                   {p.description && (
