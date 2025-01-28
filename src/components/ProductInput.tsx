@@ -81,7 +81,9 @@ const ProductInput = () => {
 
   const handleCalculate = () => {
     const area = product.length * product.width;
-    toast.info(`Luas: ${area} cm²`);
+    const calculatedPrice = area * Number(product.unit);
+    setProduct({ ...product, price: calculatedPrice });
+    toast.info(`Luas: ${area} cm² | Harga: Rp ${calculatedPrice.toLocaleString()}`);
   };
 
   return (
@@ -102,7 +104,8 @@ const ProductInput = () => {
             id="unit"
             value={product.unit}
             onChange={(e) => setProduct({ ...product, unit: e.target.value })}
-            placeholder="Contoh: Pcs, Box, Meter"
+            placeholder="Contoh: Harga per cm²"
+            type="number"
             required
           />
         </div>
