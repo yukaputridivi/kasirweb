@@ -15,6 +15,7 @@ interface Product {
   price: number;
   stock: number;
   description: string;
+  unit: string;
 }
 
 const ProductInput = () => {
@@ -26,7 +27,8 @@ const ProductInput = () => {
     width: 0,
     price: 0,
     stock: 0,
-    description: ''
+    description: '',
+    unit: ''
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -56,7 +58,7 @@ const ProductInput = () => {
       toast.success('Produk berhasil ditambahkan');
     }
 
-    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '' });
+    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '', unit: '' });
     loadProducts();
   };
 
@@ -73,7 +75,7 @@ const ProductInput = () => {
   };
 
   const handleCancel = () => {
-    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '' });
+    setProduct({ id: '', name: '', length: 0, width: 0, price: 0, stock: 0, description: '', unit: '' });
     setIsEditing(false);
   };
 
@@ -111,15 +113,27 @@ const ProductInput = () => {
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="price">Harga</Label>
-          <Input
-            id="price"
-            type="number"
-            value={product.price}
-            onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
-            required
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="price">Harga</Label>
+            <Input
+              id="price"
+              type="number"
+              value={product.price}
+              onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="unit">Satuan</Label>
+            <Input
+              id="unit"
+              value={product.unit}
+              onChange={(e) => setProduct({ ...product, unit: e.target.value })}
+              placeholder="Contoh: Pcs, Box, Meter"
+              required
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <Label htmlFor="stock">Stok</Label>
@@ -162,7 +176,7 @@ const ProductInput = () => {
                   <h3 className="font-semibold">{p.name}</h3>
                   <p className="text-sm text-gray-500">Ukuran: {p.length} x {p.width} cm</p>
                   <p className="text-gray-600">Rp. {p.price.toLocaleString()}</p>
-                  <p className="text-sm text-gray-500">Stok: {p.stock}</p>
+                  <p className="text-sm text-gray-500">Stok: {p.stock} {p.unit}</p>
                   {p.description && (
                     <p className="text-sm text-gray-600 mt-1">{p.description}</p>
                   )}
