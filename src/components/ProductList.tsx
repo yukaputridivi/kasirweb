@@ -5,15 +5,19 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Pencil } from "lucide-react";
+import { Calculator } from "lucide-react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Product {
   id: string;
   name: string;
+  length: number;
+  width: number;
   price: number;
   stock: number;
   description: string;
+  unit: string;
 }
 
 interface ProductListProps {
@@ -55,6 +59,14 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
     toast.success('Produk berhasil diperbarui');
   };
 
+  const handleCalculate = () => {
+    if (!editingProduct) return;
+    const area = editingProduct.length * editingProduct.width;
+    const calculatedPrice = area * Number(editingProduct.unit);
+    setEditingProduct({ ...editingProduct, price: calculatedPrice });
+    toast.info(`Luas: ${area} cm² | Harga: Rp ${calculatedPrice.toLocaleString()}`);
+  };
+
   const handleAddToCart = (product: Product) => {
     onAddToCart(product);
   };
@@ -72,6 +84,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <h3 className="font-semibold">{product.name}</h3>
+                  <p className="text-sm text-gray-500">Ukuran: {product.length} x {product.width} cm</p>
                   <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {product.stock}</p>
                   {product.description && (
@@ -117,28 +130,85 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="price">Harga</Label>
+                  <Label htmlFor="unit">Satuan</Label>
                   <Input
-                    id="price"
-                    type="number"
-                    value={editingProduct.price}
+                    id="unit"
+                    value={editingProduct.unit}
                     onChange={(e) => setEditingProduct({
                       ...editingProduct,
-                      price: Number(e.target.value)
+                      unit: e.target.value
                     })}
+                    placeholder="Contoh: Harga per cm²"
+                    type="number"
+                    required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="stock">Stok</Label>
-                  <Input
-                    id="stock"
-                    type="number"
-                    value={editingProduct.stock}
-                    onChange={(e) => setEditingProduct({
-                      ...editingProduct,
-                      stock: Number(e.target.value)
-                    })}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="length">Panjang (cm)</Label>
+                    <Input
+                      id="length"
+                      type="number"
+                      value={editingProduct.length}
+                      onChange={(e) => setEditingProduct({
+                        ...editingProduct,
+                        length: Number(e.target.value)
+                      })}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="width">Lebar (cm)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="width"
+                        type="number"
+                        value={editingProduct.width}
+                        onChange={(e) => setEditingProduct({
+                          ...editingProduct,
+                          width: Number(e.target.value)
+                        })}
+                        required
+                      />
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon"
+                        onClick={handleCalculate}
+                        className="flex-shrink-0"
+                      >
+                        <Calculator className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="price">Harga</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      value={editingProduct.price}
+                      onChange={(e) => setEditingProduct({
+                        ...editingProduct,
+                        price: Number(e.target.value)
+                      })}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="stock">Stok</Label>
+                    <Input
+                      id="stock"
+                      type="number"
+                      value={editingProduct.stock}
+                      onChange={(e) => setEditingProduct({
+                        ...editingProduct,
+                        stock: Number(e.target.value)
+                      })}
+                      required
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="description">Keterangan</Label>
