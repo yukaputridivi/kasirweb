@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from 'sonner';
 import { Card, CardContent } from "@/components/ui/card";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Calculator } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Product {
@@ -79,6 +79,11 @@ const ProductInput = () => {
     setIsEditing(false);
   };
 
+  const handleCalculate = () => {
+    const area = product.length * product.width;
+    toast.info(`Luas: ${area} cm²`);
+  };
+
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded-lg shadow">
@@ -88,6 +93,16 @@ const ProductInput = () => {
             id="name"
             value={product.name}
             onChange={(e) => setProduct({ ...product, name: e.target.value })}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="unit">Satuan</Label>
+          <Input
+            id="unit"
+            value={product.unit}
+            onChange={(e) => setProduct({ ...product, unit: e.target.value })}
+            placeholder="Contoh: Pcs, Box, Meter"
             required
           />
         </div>
@@ -104,13 +119,24 @@ const ProductInput = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="width">Lebar (cm)</Label>
-            <Input
-              id="width"
-              type="number"
-              value={product.width}
-              onChange={(e) => setProduct({ ...product, width: Number(e.target.value) })}
-              required
-            />
+            <div className="flex gap-2">
+              <Input
+                id="width"
+                type="number"
+                value={product.width}
+                onChange={(e) => setProduct({ ...product, width: Number(e.target.value) })}
+                required
+              />
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="icon"
+                onClick={handleCalculate}
+                className="flex-shrink-0"
+              >
+                <Calculator className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -125,25 +151,15 @@ const ProductInput = () => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="unit">Satuan</Label>
+            <Label htmlFor="stock">Stok</Label>
             <Input
-              id="unit"
-              value={product.unit}
-              onChange={(e) => setProduct({ ...product, unit: e.target.value })}
-              placeholder="Contoh: Pcs, Box, Meter"
+              id="stock"
+              type="number"
+              value={product.stock}
+              onChange={(e) => setProduct({ ...product, stock: Number(e.target.value) })}
               required
             />
           </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="stock">Stok</Label>
-          <Input
-            id="stock"
-            type="number"
-            value={product.stock}
-            onChange={(e) => setProduct({ ...product, stock: Number(e.target.value) })}
-            required
-          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Keterangan</Label>
