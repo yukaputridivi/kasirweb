@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Printer } from "lucide-react";
 
 interface CartItem {
   id: string;
@@ -36,6 +37,29 @@ const Cart = ({
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const change = payment - total;
   const paymentStatus = payment >= total ? "Lunas" : "Dp";
+
+  const handlePrint = () => {
+    const printContent = `
+      DAFTAR PEMBELIAN
+      ================
+      Pelanggan: ${customerName || '-'}
+      
+      Items:
+      ${items.map(item => `${item.name} x${item.quantity} = Rp. ${(item.price * item.quantity).toLocaleString()}`).join('\n')}
+      
+      Total: Rp. ${total.toLocaleString()}
+      Bayar: Rp. ${payment.toLocaleString()}
+      Kembali: Rp. ${change.toLocaleString()}
+      Status: ${paymentStatus}
+    `;
+
+    const printWindow = window.open('', '', 'height=600,width=800');
+    if (printWindow) {
+      printWindow.document.write('<pre>' + printContent + '</pre>');
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
 
   return (
     <Card className="h-full">
@@ -103,13 +127,22 @@ const Cart = ({
               className="w-full"
             />
           </div>
-          <Button 
-            onClick={onCheckout}
-            className="w-full"
-            disabled={items.length === 0}
-          >
-            Simpan & cetak nota
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={onCheckout}
+              className="flex-1"
+              disabled={items.length === 0}
+            >
+              Simpan & cetak nota
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handlePrint}
+              disabled={items.length === 0}
+            >
+              <Printer className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
