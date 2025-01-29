@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProductInput from '@/components/ProductInput';
 import ProductList from '@/components/ProductList';
 import Cart from '@/components/Cart';
@@ -8,7 +9,9 @@ import StoreSettings from '@/components/StoreSettings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface Product {
   id: string;
@@ -25,6 +28,7 @@ interface CartItem {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [payment, setPayment] = useState(0);
   const [showReceipt, setShowReceipt] = useState(false);
@@ -98,8 +102,26 @@ const Index = () => {
 
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    toast.success("Berhasil logout");
+    navigate("/login");
+  };
+
   return (
     <div className="container py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Aplikasi Kasir</h1>
+        <Button
+          variant="outline"
+          onClick={handleLogout}
+          className="flex items-center gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </Button>
+      </div>
+      
       <Tabs defaultValue="pos" className="space-y-4">
         <TabsList>
           <TabsTrigger value="pos">Kasir</TabsTrigger>
