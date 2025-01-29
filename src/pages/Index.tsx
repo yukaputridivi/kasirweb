@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductInput from '@/components/ProductInput';
 import ProductList from '@/components/ProductList';
@@ -34,6 +34,29 @@ const Index = () => {
   const [showReceipt, setShowReceipt] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [storageInfo, setStorageInfo] = useState({ used: 0, total: 0 });
+
+  useEffect(() => {
+    // Calculate localStorage usage
+    const calculateStorage = () => {
+      let total = 0;
+      for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+          total += (localStorage[key].length + key.length) * 2; // Convert to bytes
+        }
+      }
+      // Convert to MB with 2 decimal places
+      const usedMB = (total / (1024 * 1024)).toFixed(2);
+      // Maximum localStorage size (usually 5-10MB, we'll use 5MB as a conservative estimate)
+      const totalMB = 5;
+      setStorageInfo({
+        used: parseFloat(usedMB),
+        total: totalMB
+      });
+    };
+
+    calculateStorage();
+  }, [cartItems]); // Recalculate when cart changes
 
   const handleAddToCart = (product: Product) => {
     const existingItem = cartItems.find(item => item.id === product.id);
@@ -168,7 +191,25 @@ const Index = () => {
         </TabsContent>
 
         <TabsContent value="settings">
-          <StoreSettings />
+          <div className="space-y-6">
+            <StoreSettings />
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Informasi Penyimpanan</h3>
+              <div className="space-y-2">
+                <p>Penyimpanan Terpakai: {storageInfo.used} MB</p>
+                <p>Total Penyimpanan: {storageInfo.total} MB</p>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div 
+                    className="bg-blue-600 h-2.5 rounded-full" 
+                    style={{ width: `${(storageInfo.used / storageInfo.total) * 100}%` }}
+                  ></div>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  {((storageInfo.used / storageInfo.total) * 100).toFixed(1)}% terpakai
+                </p>
+              </div>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
 
