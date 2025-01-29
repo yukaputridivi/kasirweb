@@ -87,12 +87,6 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                   <p className="text-sm text-gray-500">Ukuran: {product.length} x {product.width} cm</p>
                   <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {product.stock}</p>
-</lov-replace>
-<lov-search>
-                    Tambah ke Keranjang
-</lov-search>
-<lov-replace>
-                    +
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -106,7 +100,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                     onClick={() => handleAddToCart(product)}
                     disabled={product.stock === 0}
                   >
-                    Tambah ke Keranjang
+                    +
                   </Button>
                 </div>
               </div>
