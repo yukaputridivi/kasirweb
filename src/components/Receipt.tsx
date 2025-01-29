@@ -31,7 +31,6 @@ const Receipt = ({ items, total, payment, change, customerName, onClose }: Recei
         {storeData.phoneNumber && (
           <p className="text-sm text-gray-600">HP: {storeData.phoneNumber}</p>
         )}
-        <h2 className="font-bold text-xl">Struk Pembayaran</h2>
         <p className="text-sm text-gray-500">{new Date().toLocaleString()}</p>
         {customerName && (
           <p className="text-sm">Pelanggan: {customerName}</p>
