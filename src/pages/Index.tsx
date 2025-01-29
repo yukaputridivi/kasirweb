@@ -4,6 +4,7 @@ import ProductList from '@/components/ProductList';
 import Cart from '@/components/Cart';
 import Receipt from '@/components/Receipt';
 import SalesJournal from '@/components/SalesJournal';
+import StoreSettings from '@/components/StoreSettings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -104,6 +105,7 @@ const Index = () => {
           <TabsTrigger value="pos">Kasir</TabsTrigger>
           <TabsTrigger value="products">Input Produk</TabsTrigger>
           <TabsTrigger value="journal">Data Penjualan</TabsTrigger>
+          <TabsTrigger value="settings">Data Toko</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pos" className="space-y-4">
@@ -142,6 +144,10 @@ const Index = () => {
         <TabsContent value="journal">
           <SalesJournal />
         </TabsContent>
+
+        <TabsContent value="settings">
+          <StoreSettings />
+        </TabsContent>
       </Tabs>
 
       <Dialog open={showReceipt} onOpenChange={setShowReceipt}>
@@ -151,6 +157,7 @@ const Index = () => {
             total={total}
             payment={payment}
             change={payment - total}
+            customerName={customerName}
             onClose={handleCloseReceipt}
           />
         </DialogContent>

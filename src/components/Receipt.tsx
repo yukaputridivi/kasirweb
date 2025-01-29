@@ -20,10 +20,17 @@ const Receipt = ({ items, total, payment, change, customerName, onClose }: Recei
   };
 
   const paymentStatus = payment >= total ? "Lunas" : "Dp";
+  const storeData = JSON.parse(localStorage.getItem('storeSettings') || '{}');
 
   return (
     <div className="p-4 space-y-4">
       <div className="text-center space-y-2">
+        {storeData.storeName && (
+          <h1 className="font-bold text-2xl">{storeData.storeName}</h1>
+        )}
+        {storeData.phoneNumber && (
+          <p className="text-sm text-gray-600">HP: {storeData.phoneNumber}</p>
+        )}
         <h2 className="font-bold text-xl">Struk Pembayaran</h2>
         <p className="text-sm text-gray-500">{new Date().toLocaleString()}</p>
         {customerName && (
