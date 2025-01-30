@@ -148,9 +148,9 @@ const Index = () => {
       <Tabs defaultValue="pos" className="space-y-4">
         <TabsList>
           <TabsTrigger value="pos">Kasir</TabsTrigger>
-          <TabsTrigger value="products">Input Produk</TabsTrigger>
-          <TabsTrigger value="journal">Data Penjualan</TabsTrigger>
-          <TabsTrigger value="settings">Data Toko</TabsTrigger>
+          <TabsTrigger value="products">Produk</TabsTrigger>
+          <TabsTrigger value="journal">Penjualan</TabsTrigger>
+          <TabsTrigger value="settings">Toko</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pos" className="space-y-4">
