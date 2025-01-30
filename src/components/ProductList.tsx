@@ -4,8 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Pencil } from "lucide-react";
-import { Calculator } from "lucide-react";
+import { Pencil, Calculator } from "lucide-react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -84,7 +83,6 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <h3 className="font-semibold">{product.name}</h3>
-                  <p className="text-sm text-gray-500">Ukuran: {product.length} x {product.width} cm</p>
                   <p className="text-gray-600">Rp. {product.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-500">Stok: {product.stock}</p>
                 </div>
@@ -100,7 +98,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                     onClick={() => handleAddToCart(product)}
                     disabled={product.stock === 0}
                   >
-                    +
+                    Tambah ke Keranjang
                   </Button>
                 </div>
               </div>
