@@ -87,7 +87,8 @@ const Cart = ({
           </div>
           <div className="space-y-2">
             <Label>Catatan:</Label>
-            <Textarea
+            <Input
+              type="text"
               value={paymentStatus}
               readOnly
               className="w-full bg-gray-50"
