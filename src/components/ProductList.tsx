@@ -140,7 +140,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="length">Panjang (cm)</Label>
+                    <Label htmlFor="length">Panjang</Label>
                     <Input
                       id="length"
                       type="number"
@@ -153,7 +153,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="width">Lebar (cm)</Label>
+                    <Label htmlFor="width">Lebar</Label>
                     <div className="flex gap-2">
                       <Input
                         id="width"
