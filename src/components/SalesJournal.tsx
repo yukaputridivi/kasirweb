@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import Receipt from './Receipt';
 
 interface SaleTransaction {
@@ -96,6 +97,10 @@ const SalesJournal = () => {
     setIsReceiptDialogOpen(true);
   };
 
+  const getPaymentStatus = (transaction: SaleTransaction) => {
+    return transaction.payment >= transaction.total ? "Lunas" : "DP";
+  };
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold">Data Penjualan</h2>
@@ -106,6 +111,9 @@ const SalesJournal = () => {
               <div className="flex justify-between mb-2">
                 <span className="text-sm text-gray-500">{transaction.date}</span>
                 <div className="flex gap-2">
+                  <Badge variant={getPaymentStatus(transaction) === "Lunas" ? "default" : "secondary"}>
+                    {getPaymentStatus(transaction)}
+                  </Badge>
                   <Button
                     variant="outline"
                     size="icon"
