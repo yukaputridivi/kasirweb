@@ -98,7 +98,7 @@ const ProductList = ({ onAddToCart, searchQuery }: ProductListProps) => {
                     onClick={() => handleAddToCart(product)}
                     disabled={product.stock === 0}
                   >
-                    Tambah ke Keranjang
+                    Tambah
                   </Button>
                 </div>
               </div>
